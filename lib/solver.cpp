@@ -1464,10 +1464,11 @@ bool solver::history_utilization(Key &key, int cost, int *lowerbound, bool *foun
     { // TODO: thread stopping
         if (enable_threadstop && active_threads > 0 && target_ID != thread_id)
         { // then issue thread stop request, since this path is superior
-            if (!thread_requests[target_ID].has_request || thread_requests[target_ID].request.target_depth > (int)problem_state.current_path.size())
+            unsigned long long work_threshold = ULLONG_MAX / 5;
+            if (!thread_requests[target_ID].has_request || thread_requests[target_ID].request.target_depth > (int)problem_state.current_path.size() && work_remaining[target_ID] > work_threshold)
             {
                 thread_requests[target_ID].lock.lock();
-                if (!thread_requests[target_ID].has_request || thread_requests[target_ID].request.target_depth > (int)problem_state.current_path.size()) // extra validation
+                if (!thread_requests[target_ID].has_request || thread_requests[target_ID].request.target_depth > (int)problem_state.current_path.size() && work_remaining[target_ID] > work_threshold) // extra validation
                 {
                     thread_stop_requested++;
                     thread_requests[target_ID].request = request_packet(problem_state.current_path.back(), (int)problem_state.current_path.size(),
