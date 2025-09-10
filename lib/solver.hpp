@@ -31,6 +31,7 @@
 #include "local_pool.hpp"
 #include "graph.hpp"
 #include "hungarian.hpp"
+    #include "block_count_mutex.hpp"
 // #include "active_tree.hpp"
 // #include "precedence.hpp"
 
@@ -52,7 +53,7 @@ struct thread_request
 {
     request_packet request;
     bool has_request; // Add a flag to indicate if a request is present
-    std::mutex lock;
+    Block_Count_Mutex lock;
     thread_request() : request(), has_request(false) {}
 };
 
