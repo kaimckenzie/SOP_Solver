@@ -1,30 +1,22 @@
+#ifndef BLOCK_COUNT_MUTEX_HPP
+#define BLOCK_COUNT_MUTEX_HPP
+
 #include <atomic>
 #include <mutex>
+#include <thread>
 
 class Block_Count_Mutex {
 public:
-    Block_Count_Mutex() : blocked_count(0) {}
+    Block_Count_Mutex();
 
-    void lock() {
-        while (!mtx.try_lock()) {
-            blocked_count++;
-            std::this_thread::yield();
-        }
-    }
-
-    void unlock() {
-        mtx.unlock();
-    }
-
-    bool try_lock() {
-        return mtx.try_lock();
-    }
-
-    int get_blocked_count() const {
-        return blocked_count.load();
-    }
+    void lock();
+    void unlock();
+    bool try_lock();
+    int get_blocked_count() const;
 
 private:
     std::mutex mtx;
     std::atomic<int> blocked_count;
 };
+
+#endif // BLOCK_COUNT_MUTEX_HPP
