@@ -1465,10 +1465,10 @@ bool solver::history_utilization(Key &key, int cost, int *lowerbound, bool *foun
     { // TODO: thread stopping
         if (enable_threadstop && active_threads > 0 && target_ID != thread_id)
         { // then issue thread stop request, since this path is superior
-            if (!thread_requests[target_ID].has_request || thread_requests[target_ID].request.target_depth > (int)problem_state.current_path.size() && work_remaining[target_ID] > work_threshold)
+            if (!thread_requests[target_ID].has_request || (thread_requests[target_ID].request.target_depth > (int)problem_state.current_path.size() && work_remaining[target_ID] > work_threshold))
             {
                 thread_requests[target_ID].lock.lock();
-                if (!thread_requests[target_ID].has_request || thread_requests[target_ID].request.target_depth > (int)problem_state.current_path.size() && work_remaining[target_ID] > work_threshold) // extra validation
+                if (!thread_requests[target_ID].has_request || (thread_requests[target_ID].request.target_depth > (int)problem_state.current_path.size() && work_remaining[target_ID] > work_threshold)) // extra validation
                 {
                     thread_stop_requested++;
                     thread_requests[target_ID].request = request_packet(problem_state.current_path.back(), (int)problem_state.current_path.size(),
@@ -1696,10 +1696,10 @@ bool solver::check_stop_request(std::pair<boost::dynamic_bitset<>, int> history_
             request_packet rp = thread_requests[thread_id].request;
             // if (rp.target_thread == thread_id)
             // {
-            if (rp.target_depth <= sequence.size())
+            if (rp.target_depth <= static_cast<int>(sequence.size()))
             {
                 int current_cost = problem_state.current_cost;
-                for (int i = 0; i < sequence.size() - rp.target_depth; i++)
+                for (int i = 0; i < static_cast<int>(sequence.size()) - rp.target_depth; i++)
                 {
                     current_cost -= cost_graph[cost_graph.size() - i - 1][cost_graph.size() - i].weight;
                 }
