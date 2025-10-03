@@ -422,10 +422,11 @@ void solver::solve(string f_name, int thread_num)
     long long total_blocked_time_ns = 0;
     for (int i = 0; i < thread_requests.size(); ++i) {
         total_blocked_count += thread_requests[i].lock.get_blocked_count();
+        total_blocked_time_ns += thread_requests[i].lock.get_blocked_time_ns();
     }
     std::cout << "Total blocked attempts: " << total_blocked_count << std::endl;
     double total_blocked_time_sec = total_blocked_time_ns / 1e9;
-    std::cout << "Total blocked time: " << total_blocked_time_sec << " s" << std::endl;
+    std::cout << "Total blocked time: " << total_blocked_time_sec << std::endl;
 #endif
 
     for (int i = 0; i < steal_success.size(); i++)
