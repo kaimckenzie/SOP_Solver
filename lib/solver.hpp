@@ -118,6 +118,7 @@ private:
     //  int concentrate_lv = 0;
 
     // Thread Stopping
+    unsigned long long work_threshold = ULLONG_MAX / 5;
     //  int stop_depth = -1;
     //  int last_node = -1;
     //  bool stop_init = false; //INVESTIGATE; might be whether this thread has ever been stopped before
