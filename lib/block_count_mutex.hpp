@@ -21,4 +21,13 @@ private:
     std::atomic<long long> blocked_time_ns;
 };
 
+class Spin_Lock {
+public:
+    void lock();
+    void unlock();
+
+private:
+    std::atomic_flag flag = ATOMIC_FLAG_INIT;
+};
+
 #endif // BLOCK_COUNT_MUTEX_HPP

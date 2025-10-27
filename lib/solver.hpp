@@ -53,8 +53,10 @@ struct thread_request
 {
     request_packet request;
     bool has_request; // Add a flag to indicate if a request is present
-#ifdef BLOCK_COUNT_MUTEX
+#if defined(BLOCK_COUNT_MUTEX)
     Block_Count_Mutex lock;
+#elif defined(SPIN_LOCK_MUTEX)
+    Spin_Lock lock;
 #else //Default
     std::mutex lock;
 #endif

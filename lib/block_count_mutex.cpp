@@ -6,7 +6,7 @@ Block_Count_Mutex::Block_Count_Mutex()
 void Block_Count_Mutex::lock() {
     auto start_time = std::chrono::high_resolution_clock::now();
 #ifdef BLOCK_COUNT_SPIN_LOCK
-    // spin lock
+    // try lock check
     while (!mtx.try_lock()) {
         blocked_count++;
         std::this_thread::yield();
@@ -37,3 +37,14 @@ int Block_Count_Mutex::get_blocked_count() const {
 long long Block_Count_Mutex::get_blocked_time_ns() const {
     return blocked_time_ns.load();
 }
+
+void Spin_Lock::lock() {
+    while (flag.test_and_set(std::memory_order_acquire)) {
+        // busy-wait loop
+    }
+}
+
+void Spin_Lock::unlock() {
+    flag.clear(std::memory_order_release);
+}
+
