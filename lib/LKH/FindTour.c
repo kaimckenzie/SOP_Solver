@@ -1,4 +1,5 @@
 #include "LKH.h"
+#include "timer_wrapper.h"
 
 /*
  * After the candidate set has been created the FindTour function is called
@@ -86,8 +87,9 @@ GainType FindTour()
             if (Cost < best_cost) {
                 pthread_mutex_lock(&Sol_lock);
                 best_cost = Cost;
-                printf("Best Cost = %lld Found by LKH in trail %d\n", Cost, Trial);
-                BB_SolFound = false;
+                //printf("Best Cost = %lld Found by LKH in trail %d\n", Cost, Trial);
+		printf("Best Cost = %lld Found by LKH in trail %d at time = %f\n", Cost, Trial, get_main_timer_seconds());
+		BB_SolFound = false;
                 pthread_mutex_unlock(&Sol_lock);
             }
 
